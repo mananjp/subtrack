@@ -13,21 +13,21 @@ class Base(DeclarativeBase):
     pass
 
 
-class Invoice(Base):
+class Invoices(Base):
     __tablename__ = "invoices"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     client_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    amount: Mapped[float] = mapped_column(Float, nullable=False)
-    issued_on: Mapped[date] = mapped_column(Date, nullable=False)
+    amount: Mapped[str] = mapped_column(String(255), nullable=False)
+    issued_on: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None))
 
 
-class Expense(Base):
+class Expenses(Base):
     __tablename__ = "expenses"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     description: Mapped[str] = mapped_column(String(255), nullable=False)
-    amount: Mapped[float] = mapped_column(Float, nullable=False)
-    incurred_on: Mapped[date] = mapped_column(Date, nullable=False)
+    amount: Mapped[str] = mapped_column(String(255), nullable=False)
+    incurred_on: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None))

@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import type { Expense as ExpenseType } from "@/lib/types";
+import type { Expenses as ExpensesType } from "@/lib/types";
 import { api } from "@/lib/api";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -36,8 +36,8 @@ import {
 } from "@/components/ui/table";
 import { Plus, ArrowLeft, Trash2, Search, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react";
 
-export default function ExpensePage() {
-  const [rows, setRows] = useState<ExpenseType[]>([]);
+export default function ExpensesPage() {
+  const [rows, setRows] = useState<ExpensesType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -49,7 +49,7 @@ export default function ExpensePage() {
     try {
       setLoading(true);
       setError("");
-      setRows(await api.get<ExpenseType[]>("/expenses"));
+      setRows(await api.get<ExpensesType[]>("/expenses"));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load expenses");
     } finally {
@@ -65,12 +65,12 @@ export default function ExpensePage() {
     try {
       const body: Record<string, unknown> = {};
             body["description"] = String(form["description"] ?? "");
-      body["amount"] = Number(form["amount"] ?? 0);
+      body["amount"] = String(form["amount"] ?? "");
       body["incurred_on"] = String(form["incurred_on"] ?? "");
-      await api.post<ExpenseType>("/expenses", body);
+      await api.post<ExpensesType>("/expenses", body);
       setForm({});
       setShowDrawer(false);
-      setNotice("Expense created successfully!");
+      setNotice("Expenses created successfully!");
       setTimeout(() => setNotice(""), 3000);
       await load();
     } catch (err) {
@@ -137,7 +137,7 @@ export default function ExpensePage() {
                   </Button>
                   <Button onClick={() => setShowDrawer(true)}>
                     <Plus className="h-4 w-4" />
-                    New Expense
+                    New Expenses
                   </Button>
                 </div>
               </div>
@@ -269,11 +269,11 @@ export default function ExpensePage() {
               className="relative z-10 w-full max-w-md overflow-y-auto border-l border-border bg-background p-6 shadow-2xl animate-in slide-in-from-right duration-300"
               role="dialog"
               aria-modal="true"
-              aria-label="New Expense"
+              aria-label="New Expenses"
             >
               <div className="flex items-start justify-between gap-2 border-b border-border pb-4">
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">New Expense</h3>
+                  <h3 className="text-lg font-bold text-foreground">New Expenses</h3>
                   <p className="text-xs text-muted-foreground">
                     Fill in the fields to create a record
                   </p>
@@ -301,11 +301,11 @@ export default function ExpensePage() {
         </div>
           <div className="flex flex-col gap-2">
           <Label htmlFor="amount">Amount</Label>
-          <Input id="amount" type="number" value={String(field("amount") ?? "")} onChange={(e) => set("amount", e.target.value)} />
+          <Input id="amount" type="text" value={String(field("amount") ?? "")} onChange={(e) => set("amount", e.target.value)} />
         </div>
           <div className="flex flex-col gap-2">
           <Label htmlFor="incurred_on">Incurred On</Label>
-          <Input id="incurred_on" type="date" value={String(field("incurred_on") ?? "")} onChange={(e) => set("incurred_on", e.target.value)} />
+          <Input id="incurred_on" type="text" value={String(field("incurred_on") ?? "")} onChange={(e) => set("incurred_on", e.target.value)} />
         </div>
 
                 <div className="flex items-center justify-end gap-2 border-t border-border pt-6">

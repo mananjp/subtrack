@@ -40,42 +40,42 @@ async def ready(session: SessionDep) -> dict[str, str]:
     return {"status": "ready", "database": "ok"}
 
 
-async def _check_refs_invoice(session: SessionDep, data: dict) -> None:
+async def _check_refs_invoices(session: SessionDep, data: dict) -> None:
     return None
 
 
-@router.get("/invoices", response_model=list[schemas.InvoiceRead], tags=["invoices"])
+@router.get("/invoices", response_model=list[schemas.InvoicesRead], tags=["invoices"])
 async def list_invoices(session: SessionDep) -> list:
-    q = select(models.Invoice).order_by(models.Invoice.id)
+    q = select(models.Invoices).order_by(models.Invoices.id)
     return list((await session.execute(q)).scalars().all())
 
 
-@router.post("/invoices", response_model=schemas.InvoiceRead, status_code=201, tags=["invoices"])
-async def create_invoice(payload: schemas.InvoiceCreate, session: SessionDep):
+@router.post("/invoices", response_model=schemas.InvoicesRead, status_code=201, tags=["invoices"])
+async def create_invoices(payload: schemas.InvoicesCreate, session: SessionDep):
     data = payload.model_dump()
-    await _check_refs_invoice(session, data)
-    obj = models.Invoice(**data)
+    await _check_refs_invoices(session, data)
+    obj = models.Invoices(**data)
     session.add(obj)
     await session.commit()
     await session.refresh(obj)
     return obj
 
 
-@router.get("/invoices/{item_id}", response_model=schemas.InvoiceRead, tags=["invoices"])
-async def get_invoice(item_id: int, session: SessionDep):
-    obj = await session.get(models.Invoice, item_id)
+@router.get("/invoices/{item_id}", response_model=schemas.InvoicesRead, tags=["invoices"])
+async def get_invoices(item_id: int, session: SessionDep):
+    obj = await session.get(models.Invoices, item_id)
     if obj is None:
-        raise HTTPException(404, "invoice not found")
+        raise HTTPException(404, "invoices not found")
     return obj
 
 
-@router.patch("/invoices/{item_id}", response_model=schemas.InvoiceRead, tags=["invoices"])
-async def update_invoice(item_id: int, payload: schemas.InvoiceUpdate, session: SessionDep):
-    obj = await session.get(models.Invoice, item_id)
+@router.patch("/invoices/{item_id}", response_model=schemas.InvoicesRead, tags=["invoices"])
+async def update_invoices(item_id: int, payload: schemas.InvoicesUpdate, session: SessionDep):
+    obj = await session.get(models.Invoices, item_id)
     if obj is None:
-        raise HTTPException(404, "invoice not found")
+        raise HTTPException(404, "invoices not found")
     data = payload.model_dump(exclude_unset=True)
-    await _check_refs_invoice(session, data)
+    await _check_refs_invoices(session, data)
     for k, v in data.items():
         setattr(obj, k, v)
     await session.commit()
@@ -84,50 +84,50 @@ async def update_invoice(item_id: int, payload: schemas.InvoiceUpdate, session: 
 
 
 @router.delete("/invoices/{item_id}", tags=["invoices"])
-async def delete_invoice(item_id: int, session: SessionDep) -> dict:
-    obj = await session.get(models.Invoice, item_id)
+async def delete_invoices(item_id: int, session: SessionDep) -> dict:
+    obj = await session.get(models.Invoices, item_id)
     if obj is None:
-        raise HTTPException(404, "invoice not found")
+        raise HTTPException(404, "invoices not found")
     await session.delete(obj)
     await session.commit()
     return {"deleted": True}
 
-async def _check_refs_expense(session: SessionDep, data: dict) -> None:
+async def _check_refs_expenses(session: SessionDep, data: dict) -> None:
     return None
 
 
-@router.get("/expenses", response_model=list[schemas.ExpenseRead], tags=["expenses"])
+@router.get("/expenses", response_model=list[schemas.ExpensesRead], tags=["expenses"])
 async def list_expenses(session: SessionDep) -> list:
-    q = select(models.Expense).order_by(models.Expense.id)
+    q = select(models.Expenses).order_by(models.Expenses.id)
     return list((await session.execute(q)).scalars().all())
 
 
-@router.post("/expenses", response_model=schemas.ExpenseRead, status_code=201, tags=["expenses"])
-async def create_expense(payload: schemas.ExpenseCreate, session: SessionDep):
+@router.post("/expenses", response_model=schemas.ExpensesRead, status_code=201, tags=["expenses"])
+async def create_expenses(payload: schemas.ExpensesCreate, session: SessionDep):
     data = payload.model_dump()
-    await _check_refs_expense(session, data)
-    obj = models.Expense(**data)
+    await _check_refs_expenses(session, data)
+    obj = models.Expenses(**data)
     session.add(obj)
     await session.commit()
     await session.refresh(obj)
     return obj
 
 
-@router.get("/expenses/{item_id}", response_model=schemas.ExpenseRead, tags=["expenses"])
-async def get_expense(item_id: int, session: SessionDep):
-    obj = await session.get(models.Expense, item_id)
+@router.get("/expenses/{item_id}", response_model=schemas.ExpensesRead, tags=["expenses"])
+async def get_expenses(item_id: int, session: SessionDep):
+    obj = await session.get(models.Expenses, item_id)
     if obj is None:
-        raise HTTPException(404, "expense not found")
+        raise HTTPException(404, "expenses not found")
     return obj
 
 
-@router.patch("/expenses/{item_id}", response_model=schemas.ExpenseRead, tags=["expenses"])
-async def update_expense(item_id: int, payload: schemas.ExpenseUpdate, session: SessionDep):
-    obj = await session.get(models.Expense, item_id)
+@router.patch("/expenses/{item_id}", response_model=schemas.ExpensesRead, tags=["expenses"])
+async def update_expenses(item_id: int, payload: schemas.ExpensesUpdate, session: SessionDep):
+    obj = await session.get(models.Expenses, item_id)
     if obj is None:
-        raise HTTPException(404, "expense not found")
+        raise HTTPException(404, "expenses not found")
     data = payload.model_dump(exclude_unset=True)
-    await _check_refs_expense(session, data)
+    await _check_refs_expenses(session, data)
     for k, v in data.items():
         setattr(obj, k, v)
     await session.commit()
@@ -136,10 +136,10 @@ async def update_expense(item_id: int, payload: schemas.ExpenseUpdate, session: 
 
 
 @router.delete("/expenses/{item_id}", tags=["expenses"])
-async def delete_expense(item_id: int, session: SessionDep) -> dict:
-    obj = await session.get(models.Expense, item_id)
+async def delete_expenses(item_id: int, session: SessionDep) -> dict:
+    obj = await session.get(models.Expenses, item_id)
     if obj is None:
-        raise HTTPException(404, "expense not found")
+        raise HTTPException(404, "expenses not found")
     await session.delete(obj)
     await session.commit()
     return {"deleted": True}

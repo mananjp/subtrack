@@ -5,9 +5,9 @@
   "assumptions": [],
   "entities": [
     {
-      "name": "invoice",
+      "name": "invoices",
       "plural": "invoices",
-      "description": "invoice entity",
+      "description": "invoices entity",
       "fields": [
         {
           "name": "client_name",
@@ -20,7 +20,7 @@
         },
         {
           "name": "amount",
-          "type": "float",
+          "type": "string",
           "required": true,
           "enum_values": [],
           "ref": null,
@@ -29,7 +29,7 @@
         },
         {
           "name": "issued_on",
-          "type": "date",
+          "type": "string",
           "required": true,
           "enum_values": [],
           "ref": null,
@@ -39,9 +39,9 @@
       ]
     },
     {
-      "name": "expense",
+      "name": "expenses",
       "plural": "expenses",
-      "description": "expense entity",
+      "description": "expenses entity",
       "fields": [
         {
           "name": "description",
@@ -54,7 +54,7 @@
         },
         {
           "name": "amount",
-          "type": "float",
+          "type": "string",
           "required": true,
           "enum_values": [],
           "ref": null,
@@ -63,7 +63,7 @@
         },
         {
           "name": "incurred_on",
-          "type": "date",
+          "type": "string",
           "required": true,
           "enum_values": [],
           "ref": null,
@@ -80,8 +80,8 @@
       "route": "/",
       "purpose": "Overview of Subtrack",
       "uses_entities": [
-        "invoice",
-        "expense"
+        "invoices",
+        "expenses"
       ],
       "uses_actions": [],
       "key_interactions": [
@@ -90,11 +90,11 @@
       ]
     },
     {
-      "name": "invoice_mgmt",
+      "name": "invoices_mgmt",
       "route": "/invoices",
       "purpose": "Manage invoices",
       "uses_entities": [
-        "invoice"
+        "invoices"
       ],
       "uses_actions": [],
       "key_interactions": [
@@ -104,11 +104,11 @@
       ]
     },
     {
-      "name": "expense_mgmt",
+      "name": "expenses_mgmt",
       "route": "/expenses",
       "purpose": "Manage expenses",
       "uses_entities": [
-        "expense"
+        "expenses"
       ],
       "uses_actions": [],
       "key_interactions": [
@@ -120,21 +120,21 @@
   ],
   "acceptance_tests": [
     {
-      "name": "create_invoice",
-      "description": "A new invoice can be created via POST",
+      "name": "create_invoices",
+      "description": "A new invoices can be created via POST",
       "steps": [
         {
           "method": "POST",
           "path": "/invoices",
           "body": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
           },
           "expect_status": 201,
           "expect": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
           },
           "save": {
@@ -158,15 +158,15 @@
       ]
     },
     {
-      "name": "get_invoice",
-      "description": "A single invoice can be created and retrieved by ID",
+      "name": "get_invoices",
+      "description": "A single invoices can be created and retrieved by ID",
       "steps": [
         {
           "method": "POST",
           "path": "/invoices",
           "body": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
           },
           "expect_status": 201,

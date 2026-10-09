@@ -8,21 +8,21 @@ from conftest import run_steps
 pytestmark = pytest.mark.asyncio
 
 
-async def test_create_invoice(client):
-    """A new invoice can be created via POST"""
+async def test_create_invoices(client):
+    """A new invoices can be created via POST"""
     steps = [
     {
         "method": "POST",
         "path": "/invoices",
         "body": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
         },
         "expect_status": 201,
         "expect": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
         },
         "save": {
@@ -47,15 +47,15 @@ async def test_list_invoices(client):
     await run_steps(client, steps)
 
 
-async def test_get_invoice(client):
-    """A single invoice can be created and retrieved by ID"""
+async def test_get_invoices(client):
+    """A single invoices can be created and retrieved by ID"""
     steps = [
     {
         "method": "POST",
         "path": "/invoices",
         "body": {
             "client_name": "Sample Value",
-            "amount": 10.0,
+            "amount": "Sample Value",
             "issued_on": "Sample Value"
         },
         "expect_status": 201,

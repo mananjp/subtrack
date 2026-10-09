@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     )
 
     # ── Security ───────────────────────────────────────────────────────
-    JWT_SECRET: str = Field(default="12uS5P1OLDGob0gBgZHPNwHwSe9FhvytGI0X0abk89rxXA7_xTnYYYEDV5tmEi3-", alias="JWT_SECRET")
+    JWT_SECRET: str = Field(default="5HqZUEi7801AYH1Vmv3HXD3SovIg1TNfjoRCCJ7e8oHAVJfmqFzOijgY6fnzzVj_", alias="JWT_SECRET")
     JWT_ALGORITHM: str = Field(default="HS256", alias="JWT_ALGORITHM")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(default=60 * 24, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
 

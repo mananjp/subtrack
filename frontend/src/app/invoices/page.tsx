@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import type { Invoice as InvoiceType } from "@/lib/types";
+import type { Invoices as InvoicesType } from "@/lib/types";
 import { api } from "@/lib/api";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -36,8 +36,8 @@ import {
 } from "@/components/ui/table";
 import { Plus, ArrowLeft, Trash2, Search, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react";
 
-export default function InvoicePage() {
-  const [rows, setRows] = useState<InvoiceType[]>([]);
+export default function InvoicesPage() {
+  const [rows, setRows] = useState<InvoicesType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -49,7 +49,7 @@ export default function InvoicePage() {
     try {
       setLoading(true);
       setError("");
-      setRows(await api.get<InvoiceType[]>("/invoices"));
+      setRows(await api.get<InvoicesType[]>("/invoices"));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load invoices");
     } finally {
@@ -65,12 +65,12 @@ export default function InvoicePage() {
     try {
       const body: Record<string, unknown> = {};
             body["client_name"] = String(form["client_name"] ?? "");
-      body["amount"] = Number(form["amount"] ?? 0);
+      body["amount"] = String(form["amount"] ?? "");
       body["issued_on"] = String(form["issued_on"] ?? "");
-      await api.post<InvoiceType>("/invoices", body);
+      await api.post<InvoicesType>("/invoices", body);
       setForm({});
       setShowDrawer(false);
-      setNotice("Invoice created successfully!");
+      setNotice("Invoices created successfully!");
       setTimeout(() => setNotice(""), 3000);
       await load();
     } catch (err) {
@@ -137,7 +137,7 @@ export default function InvoicePage() {
                   </Button>
                   <Button onClick={() => setShowDrawer(true)}>
                     <Plus className="h-4 w-4" />
-                    New Invoice
+                    New Invoices
                   </Button>
                 </div>
               </div>
@@ -269,11 +269,11 @@ export default function InvoicePage() {
               className="relative z-10 w-full max-w-md overflow-y-auto border-l border-border bg-background p-6 shadow-2xl animate-in slide-in-from-right duration-300"
               role="dialog"
               aria-modal="true"
-              aria-label="New Invoice"
+              aria-label="New Invoices"
             >
               <div className="flex items-start justify-between gap-2 border-b border-border pb-4">
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">New Invoice</h3>
+                  <h3 className="text-lg font-bold text-foreground">New Invoices</h3>
                   <p className="text-xs text-muted-foreground">
                     Fill in the fields to create a record
                   </p>
@@ -301,11 +301,11 @@ export default function InvoicePage() {
         </div>
           <div className="flex flex-col gap-2">
           <Label htmlFor="amount">Amount</Label>
-          <Input id="amount" type="number" value={String(field("amount") ?? "")} onChange={(e) => set("amount", e.target.value)} />
+          <Input id="amount" type="text" value={String(field("amount") ?? "")} onChange={(e) => set("amount", e.target.value)} />
         </div>
           <div className="flex flex-col gap-2">
           <Label htmlFor="issued_on">Issued On</Label>
-          <Input id="issued_on" type="date" value={String(field("issued_on") ?? "")} onChange={(e) => set("issued_on", e.target.value)} />
+          <Input id="issued_on" type="text" value={String(field("issued_on") ?? "")} onChange={(e) => set("issued_on", e.target.value)} />
         </div>
 
                 <div className="flex items-center justify-end gap-2 border-t border-border pt-6">
