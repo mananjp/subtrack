@@ -1,0 +1,8 @@
+{
+  "backend/models.py": "78c170e1cee0a3f199e797381b4a2cc70944f528271c634b1cca6f4133818b18",
+  "backend/schemas.py": "1c611d02aa30991161f2452bbf5fe48a58ab8e3a94c559e10dad807f4d6f2ad2",
+  "backend/routers.py": "ba7483eb3e836dc88b92dabaf211f43f163861e1dbf41b81c93b495199c958f5",
+  "backend/tests/conftest.py": "94846aa5fa4586a3cdf58c43b61cdee2e3d72dcf113a9d128df86437d9291637",
+  "backend/tests/test_acceptance.py": "a0683dbe679a790d48d9cbd4c7c16066ef96ce466ad5df711f2e637f613ea09e",
+  "spec.json": "9bb1b244d0f7b01bdee0d0f9453c215c287d3bc4bb179bf7e117b01fde86c8fb"
+}

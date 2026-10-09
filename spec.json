@@ -1,0 +1,238 @@
+{
+  "app_name": "Subtrack",
+  "one_liner": "Full-stack Subtrack application",
+  "core_value": "Automated management and workflows for Subtrack",
+  "assumptions": [],
+  "entities": [
+    {
+      "name": "invoice",
+      "plural": "invoices",
+      "description": "invoice entity",
+      "fields": [
+        {
+          "name": "client_name",
+          "type": "string",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        },
+        {
+          "name": "issued_on",
+          "type": "date",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "expense",
+      "plural": "expenses",
+      "description": "expense entity",
+      "fields": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        },
+        {
+          "name": "incurred_on",
+          "type": "date",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "actions": [],
+  "screens": [
+    {
+      "name": "dashboard",
+      "route": "/",
+      "purpose": "Overview of Subtrack",
+      "uses_entities": [
+        "invoice",
+        "expense"
+      ],
+      "uses_actions": [],
+      "key_interactions": [
+        "view summary",
+        "navigate records"
+      ]
+    },
+    {
+      "name": "invoice_mgmt",
+      "route": "/invoices",
+      "purpose": "Manage invoices",
+      "uses_entities": [
+        "invoice"
+      ],
+      "uses_actions": [],
+      "key_interactions": [
+        "create record",
+        "list records",
+        "view details"
+      ]
+    },
+    {
+      "name": "expense_mgmt",
+      "route": "/expenses",
+      "purpose": "Manage expenses",
+      "uses_entities": [
+        "expense"
+      ],
+      "uses_actions": [],
+      "key_interactions": [
+        "create record",
+        "list records",
+        "view details"
+      ]
+    }
+  ],
+  "acceptance_tests": [
+    {
+      "name": "create_invoice",
+      "description": "A new invoice can be created via POST",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/invoices",
+          "body": {
+            "client_name": "Sample Value",
+            "amount": 10.0,
+            "issued_on": "Sample Value"
+          },
+          "expect_status": 201,
+          "expect": {
+            "client_name": "Sample Value",
+            "amount": 10.0,
+            "issued_on": "Sample Value"
+          },
+          "save": {
+            "id": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "list_invoices",
+      "description": "Listing invoices returns HTTP 200",
+      "steps": [
+        {
+          "method": "GET",
+          "path": "/invoices",
+          "body": null,
+          "expect_status": 200,
+          "expect": {},
+          "save": {}
+        }
+      ]
+    },
+    {
+      "name": "get_invoice",
+      "description": "A single invoice can be created and retrieved by ID",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/invoices",
+          "body": {
+            "client_name": "Sample Value",
+            "amount": 10.0,
+            "issued_on": "Sample Value"
+          },
+          "expect_status": 201,
+          "expect": {},
+          "save": {
+            "id": "id"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/invoices/{id}",
+          "body": null,
+          "expect_status": 200,
+          "expect": {},
+          "save": {}
+        }
+      ]
+    }
+  ],
+  "architecture": "next_fullstack",
+  "has_ml_model": false,
+  "ml_frameworks": [],
+  "app_kind": "dashboard",
+  "lifecycle_stage": "operate",
+  "data_layer": "api",
+  "theme": {
+    "primary": {
+      "h": 4.0,
+      "s": 72.0,
+      "l": 44.0
+    },
+    "background": {
+      "h": 210.0,
+      "s": 14.0,
+      "l": 97.0
+    },
+    "foreground": {
+      "h": 210.0,
+      "s": 18.0,
+      "l": 12.0
+    },
+    "accent": {
+      "h": 210.0,
+      "s": 30.0,
+      "l": 34.0
+    },
+    "muted": {
+      "h": 210.0,
+      "s": 12.0,
+      "l": 92.0
+    },
+    "ring": null,
+    "radius": "0.25rem",
+    "font_sans": "Inter",
+    "font_display": "Oswald",
+    "mood": "mechanical",
+    "rationale": "Palette from the curated 'automotive' vertical. Unknown verticals fall back to a deterministic hash-rotated palette instead of stock shadcn blue."
+  },
+  "analytics": {
+    "enabled": false,
+    "entity": null,
+    "primary_metric_field": null,
+    "views": [
+      "kpi"
+    ],
+    "rationale": ""
+  },
+  "seed_data": []
+}

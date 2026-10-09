@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app_db
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports: ["3000:3000"]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/app_db
+      APP_NAME: subtrack
+      APP_TITLE: Subtrack
+      JWT_SECRET: 12uS5P1OLDGob0gBgZHPNwHwSe9FhvytGI0X0abk89rxXA7_xTnYYYEDV5tmEi3-
+      APP_ENV: production
+      PORT: 3000
+    depends_on:
+      db: { condition: service_healthy }
+
+volumes:
+  pgdata:

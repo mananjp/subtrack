@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend-job:
+    name: Backend Job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install backend deps
+        run: pip install -r requirements.txt
+      - name: Verify backend syntax and imports
+        run: |
+          python -m py_compile main.py
+          python -c "import main; print('Backend syntax and configuration OK')"
+
+  frontend-job:
+    name: Frontend Job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Install frontend deps
+        run: npm install
+      - name: Build frontend
+        run: npm run build
+
+# On `main`, when every job above passes, Render's GitHub integration
+# auto-deploys the services described in infra/render.yaml (blueprint).
+# Require the Render GitHub Blueprint to be connected per-repository.
