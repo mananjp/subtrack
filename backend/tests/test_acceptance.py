@@ -8,22 +8,28 @@ from conftest import run_steps
 pytestmark = pytest.mark.asyncio
 
 
-async def test_create_invoices(client):
-    """A new invoices can be created via POST"""
+async def test_create_subscription(client):
+    """A new subscription can be created via POST"""
     steps = [
     {
         "method": "POST",
-        "path": "/invoices",
+        "path": "/subscriptions",
         "body": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
         },
         "expect_status": 201,
         "expect": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
         },
         "save": {
             "id": "id"
@@ -33,12 +39,12 @@ async def test_create_invoices(client):
     await run_steps(client, steps)
 
 
-async def test_list_invoices(client):
-    """Listing invoices returns HTTP 200"""
+async def test_list_subscriptions(client):
+    """Listing subscriptions returns HTTP 200"""
     steps = [
     {
         "method": "GET",
-        "path": "/invoices",
+        "path": "/subscriptions",
         "expect_status": 200,
         "expect": {},
         "save": {}
@@ -47,16 +53,19 @@ async def test_list_invoices(client):
     await run_steps(client, steps)
 
 
-async def test_get_invoices(client):
-    """A single invoices can be created and retrieved by ID"""
+async def test_get_subscription(client):
+    """A single subscription can be created and retrieved by ID"""
     steps = [
     {
         "method": "POST",
-        "path": "/invoices",
+        "path": "/subscriptions",
         "body": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
         },
         "expect_status": 201,
         "expect": {},
@@ -66,7 +75,7 @@ async def test_get_invoices(client):
     },
     {
         "method": "GET",
-        "path": "/invoices/{id}",
+        "path": "/subscriptions/{id}",
         "expect_status": 200,
         "expect": {},
         "save": {}

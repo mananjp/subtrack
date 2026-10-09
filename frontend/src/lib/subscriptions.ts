@@ -137,11 +137,41 @@ function normalize(raw: unknown): Subscription | null {
   };
 }
 
+const DEFAULT_SEEDS: Subscription[] = [
+  {
+    id: 1,
+    name: "Netflix Premium",
+    cost: 19.99,
+    billing_cycle: "monthly",
+    next_renewal: toISODate(new Date(Date.now() + 3 * 86_400_000)),
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    name: "Spotify Duo",
+    cost: 14.99,
+    billing_cycle: "monthly",
+    next_renewal: toISODate(new Date(Date.now() + 18 * 86_400_000)),
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    name: "GitHub Copilot / Pro",
+    cost: 100.0,
+    billing_cycle: "yearly",
+    next_renewal: toISODate(new Date(Date.now() + 140 * 86_400_000)),
+    created_at: new Date().toISOString(),
+  },
+];
+
 export function loadSubscriptions(): Subscription[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
+    if (!raw) {
+      saveSubscriptions(DEFAULT_SEEDS);
+      return DEFAULT_SEEDS;
+    }
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     return parsed
@@ -158,8 +188,7 @@ export function saveSubscriptions(list: Subscription[]): void {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   } catch {
-    // Storage can be unavailable (private mode / quota); the in-memory list
-    // still works for the current session.
+    // Storage can be unavailable in private mode
   }
 }
 

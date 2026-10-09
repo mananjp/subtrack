@@ -25,8 +25,7 @@ SEED: dict[str, list[dict]] = {
 
 
 MODELS = {
-    'invoices': models.Invoices,
-    'expenses': models.Expenses,
+    'subscription': models.Subscription,
 }
 
 

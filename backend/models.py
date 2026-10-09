@@ -13,21 +13,14 @@ class Base(DeclarativeBase):
     pass
 
 
-class Invoices(Base):
-    __tablename__ = "invoices"
+class Subscription(Base):
+    __tablename__ = "subscriptions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    client_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    amount: Mapped[str] = mapped_column(String(255), nullable=False)
-    issued_on: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None))
-
-
-class Expenses(Base):
-    __tablename__ = "expenses"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    description: Mapped[str] = mapped_column(String(255), nullable=False)
-    amount: Mapped[str] = mapped_column(String(255), nullable=False)
-    incurred_on: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    cost: Mapped[float] = mapped_column(Float, nullable=False)
+    billing_cycle: Mapped[str] = mapped_column(String(255), nullable=False)
+    renewal_date: Mapped[date] = mapped_column(Date, nullable=False)
+    category: Mapped[str] = mapped_column(String(255), nullable=False)
+    status: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None))

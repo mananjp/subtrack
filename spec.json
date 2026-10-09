@@ -5,12 +5,12 @@
   "assumptions": [],
   "entities": [
     {
-      "name": "invoices",
-      "plural": "invoices",
-      "description": "invoices entity",
+      "name": "subscription",
+      "plural": "subscriptions",
+      "description": "subscription entity",
       "fields": [
         {
-          "name": "client_name",
+          "name": "name",
           "type": "string",
           "required": true,
           "enum_values": [],
@@ -19,7 +19,16 @@
           "description": ""
         },
         {
-          "name": "amount",
+          "name": "cost",
+          "type": "float",
+          "required": true,
+          "enum_values": [],
+          "ref": null,
+          "default": null,
+          "description": ""
+        },
+        {
+          "name": "billing_cycle",
           "type": "string",
           "required": true,
           "enum_values": [],
@@ -28,23 +37,16 @@
           "description": ""
         },
         {
-          "name": "issued_on",
-          "type": "string",
+          "name": "renewal_date",
+          "type": "date",
           "required": true,
           "enum_values": [],
           "ref": null,
           "default": null,
           "description": ""
-        }
-      ]
-    },
-    {
-      "name": "expenses",
-      "plural": "expenses",
-      "description": "expenses entity",
-      "fields": [
+        },
         {
-          "name": "description",
+          "name": "category",
           "type": "string",
           "required": true,
           "enum_values": [],
@@ -53,16 +55,7 @@
           "description": ""
         },
         {
-          "name": "amount",
-          "type": "string",
-          "required": true,
-          "enum_values": [],
-          "ref": null,
-          "default": null,
-          "description": ""
-        },
-        {
-          "name": "incurred_on",
+          "name": "status",
           "type": "string",
           "required": true,
           "enum_values": [],
@@ -80,8 +73,7 @@
       "route": "/",
       "purpose": "Overview of Subtrack",
       "uses_entities": [
-        "invoices",
-        "expenses"
+        "subscription"
       ],
       "uses_actions": [],
       "key_interactions": [
@@ -90,25 +82,11 @@
       ]
     },
     {
-      "name": "invoices_mgmt",
-      "route": "/invoices",
-      "purpose": "Manage invoices",
+      "name": "subscription_mgmt",
+      "route": "/subscriptions",
+      "purpose": "Manage subscriptions",
       "uses_entities": [
-        "invoices"
-      ],
-      "uses_actions": [],
-      "key_interactions": [
-        "create record",
-        "list records",
-        "view details"
-      ]
-    },
-    {
-      "name": "expenses_mgmt",
-      "route": "/expenses",
-      "purpose": "Manage expenses",
-      "uses_entities": [
-        "expenses"
+        "subscription"
       ],
       "uses_actions": [],
       "key_interactions": [
@@ -120,22 +98,28 @@
   ],
   "acceptance_tests": [
     {
-      "name": "create_invoices",
-      "description": "A new invoices can be created via POST",
+      "name": "create_subscription",
+      "description": "A new subscription can be created via POST",
       "steps": [
         {
           "method": "POST",
-          "path": "/invoices",
+          "path": "/subscriptions",
           "body": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
           },
           "expect_status": 201,
           "expect": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
           },
           "save": {
             "id": "id"
@@ -144,12 +128,12 @@
       ]
     },
     {
-      "name": "list_invoices",
-      "description": "Listing invoices returns HTTP 200",
+      "name": "list_subscriptions",
+      "description": "Listing subscriptions returns HTTP 200",
       "steps": [
         {
           "method": "GET",
-          "path": "/invoices",
+          "path": "/subscriptions",
           "body": null,
           "expect_status": 200,
           "expect": {},
@@ -158,16 +142,19 @@
       ]
     },
     {
-      "name": "get_invoices",
-      "description": "A single invoices can be created and retrieved by ID",
+      "name": "get_subscription",
+      "description": "A single subscription can be created and retrieved by ID",
       "steps": [
         {
           "method": "POST",
-          "path": "/invoices",
+          "path": "/subscriptions",
           "body": {
-            "client_name": "Sample Value",
-            "amount": "Sample Value",
-            "issued_on": "Sample Value"
+            "name": "Sample Value",
+            "cost": 10.0,
+            "billing_cycle": "Sample Value",
+            "renewal_date": "Sample Value",
+            "category": "Sample Value",
+            "status": "Sample Value"
           },
           "expect_status": 201,
           "expect": {},
@@ -177,7 +164,7 @@
         },
         {
           "method": "GET",
-          "path": "/invoices/{id}",
+          "path": "/subscriptions/{id}",
           "body": null,
           "expect_status": 200,
           "expect": {},
@@ -189,41 +176,41 @@
   "architecture": "next_fullstack",
   "has_ml_model": false,
   "ml_frameworks": [],
-  "app_kind": "dashboard",
-  "lifecycle_stage": "operate",
+  "app_kind": "internal",
+  "lifecycle_stage": "showcase",
   "data_layer": "api",
   "theme": {
     "primary": {
-      "h": 4.0,
-      "s": 72.0,
-      "l": 44.0
+      "h": 258.0,
+      "s": 85.0,
+      "l": 56.0
     },
     "background": {
-      "h": 210.0,
-      "s": 14.0,
-      "l": 97.0
+      "h": 240.0,
+      "s": 20.0,
+      "l": 98.0
     },
     "foreground": {
-      "h": 210.0,
-      "s": 18.0,
-      "l": 12.0
+      "h": 240.0,
+      "s": 30.0,
+      "l": 10.0
     },
     "accent": {
-      "h": 210.0,
-      "s": 30.0,
-      "l": 34.0
+      "h": 158.0,
+      "s": 75.0,
+      "l": 42.0
     },
     "muted": {
-      "h": 210.0,
-      "s": 12.0,
+      "h": 240.0,
+      "s": 15.0,
       "l": 92.0
     },
     "ring": null,
-    "radius": "0.25rem",
+    "radius": "0.75rem",
     "font_sans": "Inter",
-    "font_display": "Oswald",
-    "mood": "mechanical",
-    "rationale": "Palette from the curated 'automotive' vertical. Unknown verticals fall back to a deterministic hash-rotated palette instead of stock shadcn blue."
+    "font_display": "Plus Jakarta Sans",
+    "mood": "modern_saas",
+    "rationale": "Palette from the curated 'subscription' vertical. Unknown verticals fall back to a deterministic hash-rotated palette instead of stock shadcn blue."
   },
   "analytics": {
     "enabled": false,

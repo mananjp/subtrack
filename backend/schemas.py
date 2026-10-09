@@ -9,37 +9,25 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict
 
 
-class InvoicesCreate(BaseModel):
-    client_name: str
-    amount: str
-    issued_on: str
+class SubscriptionCreate(BaseModel):
+    name: str
+    cost: float
+    billing_cycle: str
+    renewal_date: date
+    category: str
+    status: str
 
 
-class InvoicesUpdate(BaseModel):
-    client_name: str | None = None
-    amount: str | None = None
-    issued_on: str | None = None
+class SubscriptionUpdate(BaseModel):
+    name: str | None = None
+    cost: float | None = None
+    billing_cycle: str | None = None
+    renewal_date: date | None = None
+    category: str | None = None
+    status: str | None = None
 
 
-class InvoicesRead(InvoicesCreate):
-    model_config = ConfigDict(from_attributes=True)
-    id: int
-    created_at: datetime
-
-
-class ExpensesCreate(BaseModel):
-    description: str
-    amount: str
-    incurred_on: str
-
-
-class ExpensesUpdate(BaseModel):
-    description: str | None = None
-    amount: str | None = None
-    incurred_on: str | None = None
-
-
-class ExpensesRead(ExpensesCreate):
+class SubscriptionRead(SubscriptionCreate):
     model_config = ConfigDict(from_attributes=True)
     id: int
     created_at: datetime
